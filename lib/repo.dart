@@ -4,11 +4,11 @@ class Repo {
   final _firestore = Firestore.instance;
 
   Future<QuerySnapshot> getFriends(String myUUID) {
-    return _firestore
+    CollectionReference ref = _firestore
         .collection('userProfiles')
         .document(myUUID)
-        .collection('myFriends')
-        .getDocuments();
+        .collection('myFriends');
+    return ref.getDocuments();
   }
 }
 
