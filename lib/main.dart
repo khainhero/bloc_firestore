@@ -10,7 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: BlocProvider(
-        bloc: FriendsBloc('my uuid goes here'),
+        bloc: FriendsBloc(),
         child: MyHomePage(),
       ),
     );
@@ -39,7 +39,10 @@ class _MyHomePageState extends State<MyHomePage> {
     return StreamBuilder(
         stream: _bloc.outFriendsProfiles,
         builder: (context, snapshot) {
-          return profileWidget(context, snapshot.data.documents);
+          if (snapshot.hasData) {
+            return profileWidget(context, snapshot.data.documents);
+          }
+          return CircularProgressIndicator();
         });
   }
 
@@ -53,6 +56,7 @@ class _MyHomePageState extends State<MyHomePage> {
           margin: const EdgeInsets.all(8.0),
           child: ListTile(
             title: Text(ds.data['name']),
+            trailing: Text('${ds.data['votes']}'),
           ),
         );
       },
